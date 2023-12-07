@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+// there are several parts that need to be commented or decommented for part 1
+
 type Hand struct {
 	cards string
 	bet   int
@@ -28,7 +30,7 @@ func (a ByRank) Less(i, j int) bool {
 		"A": 13,
 		"K": 12,
 		"Q": 11,
-		"J": 0,
+		"J": 0, //change this to a 10 for part 1
 		"T": 9,
 		"9": 8,
 		"8": 7,
