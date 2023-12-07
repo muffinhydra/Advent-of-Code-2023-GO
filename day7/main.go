@@ -68,9 +68,9 @@ func evaluateRank(hand Hand) int {
 	for _, card := range cards {
 		counts[card]++
 	}
-
-	wildcardCount := counts["J"]
-	delete(counts, "J") // remove jokers from count for evaluating hand
+	//wildcardCount := 0 // add this for part 1
+	wildcardCount := counts["J"] // remove this for part 1
+	delete(counts, "J") // remove jokers from count for evaluating hand, remove this for part 1
 	if len(counts) == 0 {
 		return 7
 	}
