@@ -88,11 +88,11 @@ func evaluateRank(hand Hand) int {
 		return 6 // Four of a kind
 	case frequencies[0]+wildcardCount == 3 && frequencies[1] == 2:
 		return 5 // Full house
-	case frequencies[0]+wildcardCount == 3:
+	case frequencies[0]+wildcardCount == 3 && frequencies[1] == 1:
 		return 4 // Three of a kind
 	case frequencies[0]+wildcardCount == 2 && frequencies[1] == 2:
 		return 3 // Two pair
-	case frequencies[0]+wildcardCount == 2:
+	case frequencies[0]+wildcardCount == 2 && frequencies[1] == 1:
 		return 2 // One pair
 	default:
 		return 1 // High card
