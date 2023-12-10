@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math"
 	"os"
 	"slices"
 	"strconv"
@@ -40,55 +39,22 @@ func main() {
 
 	}
 
-	var scaffolds []Scaffold
 	scaffolds := createScaffolds(fields)
-	for _, line := range fields {
-		var subSliceCollection [][]int
-		subSliceCollection = append(subSliceCollection, line)
-		subSlice := line
-		for {
 
-			subSlice = buildScaffold(subSlice)
+	predictions := createPredictions(scaffolds)
 
-			subSliceCollection = append(subSliceCollection, subSlice)
+	fmt.Println("sum part 1:", addPredictions(predictions))
 
-			if slices.Max(subSlice) == 0 && slices.Min(subSlice) == 0 {
-				break
-			}
+	pastNumbers := createReversePredictions(scaffolds)
 
-		}
-		var t Scaffold
-		slices.Reverse(subSliceCollection)
-		t.data = subSliceCollection
-		scaffolds = append(scaffolds, t)
-
-	}
-
-	for _, scaffold := range scaffolds {
-		fmt.Println("scaffold :", scaffold)
-		var number int
-		for i, slice := range scaffold.data {
-			fmt.Println("slice :", slice)
-			number += slice[len(slice)-1]
-			slice = append(slice, number)
-			scaffold.data[i] = slice
-
-		}
-
-	}
-
-	var sum int
-	for _, scaffold := range scaffolds {
-		lastNumber := len(scaffold.data) - 1
-		sum += scaffold.data[lastNumber][len(scaffold.data[lastNumber])-1]
-	}
-	fmt.Println("sum :", sum)
+	fmt.Println("sum part 2:", addPart2Predictions(pastNumbers))
 }
 
 func buildScaffold(data []int) []int {
 	var slice []int
 	for i := 1; i < len(data); i++ {
-		slice = append(slice, data[i] - data[i-1])
+		slice = append(slice, data[i]-data[i-1])
+
 	}
 	if len(slice) == 0 {
 		return []int{0}
@@ -121,4 +87,60 @@ func createScaffolds(fields [][]int) []Scaffold {
 
 	}
 	return result
+}
+
+func createPredictions(scaffolds []Scaffold) []Scaffold {
+
+	for _, scaffold := range scaffolds {
+
+		var number int
+		for i, slice := range scaffold.data {
+			number += slice[len(slice)-1]
+			slice = append(slice, number)
+			scaffold.data[i] = slice
+
+		}
+
+	}
+	return scaffolds
+}
+
+func createReversePredictions(scaffolds []Scaffold) []Scaffold {
+	for _, scaffold := range scaffolds {
+		fmt.Println("Processing scaffold")
+
+		var number int
+		for i := 1; i < len(scaffold.data); i++ {
+
+			fmt.Printf("Processing slice %d\n", i)
+
+			number = scaffold.data[i][0] - scaffold.data[i-1][0]
+
+			fmt.Println("raw slice:", scaffold.data[i])
+
+			scaffold.data[i] = append([]int{number}, scaffold.data[i]...)
+
+			fmt.Println("Updated slice:", scaffold.data[i])
+
+		}
+	}
+	fmt.Println("Finished processing")
+	return scaffolds
+}
+
+func addPredictions(scaffolds []Scaffold) int {
+	var sum int
+	for _, scaffold := range scaffolds {
+		lastNumber := len(scaffold.data) - 1
+		sum += scaffold.data[lastNumber][len(scaffold.data[lastNumber])-1]
+	}
+	return sum
+}
+func addPart2Predictions(scaffolds []Scaffold) int {
+	var sum int
+	for _, scaffold := range scaffolds {
+		lastNumber := len(scaffold.data) - 1
+		sum += scaffold.data[lastNumber][0]
+	}
+	return sum
 }
