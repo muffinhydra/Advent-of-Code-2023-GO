@@ -1,0 +1,32 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+func main() {
+
+	// Open the txt file
+	file, err := os.Open("input.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	var fields [][]string
+	// Read line by line
+	for scanner.Scan() {
+		
+		line := scanner.Text()
+
+		fields = append(fields, strings.Fields(line))  
+		
+	}
+	fmt.Println("fields :", fields)
+}
